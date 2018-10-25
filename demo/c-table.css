@@ -1,0 +1,264 @@
+/* table */
+.grid-border{
+  width: 100%;
+  height: 100%;
+  border: 1px solid #eee;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+}
+.grid-border p{
+  margin: 0;
+}
+.grid-header table, .grid-body table{
+  width: 100%;
+}
+.grid-header{
+  background: #F6F7F8;
+}
+.grid-header th{
+  padding: 10px 5px;
+  font-weight: 400;
+}
+.grid-body{
+  flex:1;
+  overflow-y: auto;
+}
+.grid-header th{
+  font-weight: 700;
+}
+.grid-body td{
+  padding: 5px;
+}
+.grid-border tr, .grid-border th, .grid-border td{
+  box-sizing: border-box;
+}
+.grid-body .grid-hidden-tr td{
+  padding: 0;
+}
+.center-tips {
+  text-align: center;
+  padding: 8px;
+}
+.center-tips .tips-body {
+  display: inline-block;
+  line-height: 30px;
+  margin-top: 70px;
+  font-size: 14px;
+  color: #aaa;
+  padding: 20px;
+  box-shadow: #eee 5px 5px 10px;
+  text-align: center;
+}
+.center-tips .tips-body .fa-search {
+  color: #95cef9;
+}
+.center-tips .tips-body .fa-info-circle {
+  color: #fca613;
+}
+.center-tips .tips-body .fa {
+  font-size: 20px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.grid-content tr:not(:nth-child(1)){
+  border-bottom: 1px solid #eee;
+  padding: 5px 10px;
+  position: relative;
+}
+.grid-content tr.grid-text-tr{
+  border: none;
+}
+.grid-content tr.active{
+  background: #E6F4FF;
+}
+.grid-content .subtr.active{
+  background: #E6F4FF;
+}
+.grid-body td.subtd{
+  padding: 0;
+}
+.grid-content tr.sub-child{
+  border-bottom: none;
+  background: #F6F7F8
+}
+/* table-checkbox */
+.sku-check{
+	display: inline;
+}
+.sku-check label{
+background: #fff;
+border-radius: 3px;
+	margin: 0;
+	display: inline;
+	cursor: pointer;
+	overflow: hidden;
+}
+.sku-check input{
+	display: none;
+}
+.sku-check input:checked ~ i{
+	background: #278CDE;
+	border-color: #278CDE;
+}
+.sku-check i{
+	color: #fff;
+	line-height: 16px;
+	width: 13px;
+	height: 14px;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 100;
+  margin-bottom: -3px;
+}
+.sku-check .check-background{
+position: absolute;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+z-index: -1;
+}
+.sku-check input:checked ~ .check-background{
+background: #F6F7F8;
+}
+.sku-td:hover .sku-check input:checked ~ .check-background{
+	background: #FFFB91;
+}
+.sku-check input:disabled ~ i{
+opacity:0.7;
+background: #f4f4f4;
+color: #f4f4f4;
+cursor:not-allowed;
+}
+.text-center{
+	text-align: center;
+}
+.toggle-child{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.toggle-child input{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  z-index: 2;
+}
+.toggle-child i {
+  transition: all 0.5s;
+  font-size: 20px;
+  transform: rotate(-90deg);
+}
+.toggle-child input:checked ~ i {
+  transform: rotate(0deg);
+}
+.category-remark{
+  max-height: 40px;
+  line-height: 20px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-all;
+  overflow: hidden;
+}
+.clamp-text{
+  position: relative;
+}
+.clamp-text:after {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFFFFF 50%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  bottom: 0;
+  content: "...";
+  padding: 0 5px 1px 6px;
+  position: absolute;
+  right: 0;
+
+}
+/* icon */
+.fa-caret-down{
+  width: 14px;
+  height: 14px;
+  position: relative;
+}
+.fa-caret-down::after{
+  content: "";
+  border: 7px solid transparent;
+  border-top-color: #222;
+  position: absolute;
+  left: 0;
+  top: 6px;
+}
+.fa-check{
+  display: inline-block;
+  position: relative;
+  width: 8px;
+  height: 8px;
+}
+.fa-check:before {
+  content: '';
+  position: absolute;
+  width: 80%;
+  left: 20%;
+  top: 40%;
+  background: #fff;
+  height: 2px;
+  transform: rotate(-50deg);
+}
+.fa-check:after {
+  content: '';
+  position: absolute;
+  width: 40%;
+  left: 10%;
+  top: 60%;
+  background: #fff;
+  height: 2px;
+  transform: rotate(30deg);
+}
+/* pw */
+.pw-40{
+  width: 40%;
+}
+.pw-35{
+  width: 35%;
+}
+.pw-30{
+  width: 30%;
+}
+.pw-25{
+  width: 25%;
+}
+.pw-20{
+  width: 20%;
+}
+.pw-15{
+  width: 15%;
+}
+.pw-10{
+  width: 10%;
+}
+.pw-12{
+  width: 12%;
+}
+.pw-8{
+  width: 8%;
+}
+.pw-5{
+  width: 5%;
+}
+.pw-2{
+  width: 2%;
+}
+/* pointer */
+.pointer{
+  cursor: pointer;
+}
+.pointer-disabled{
+  cursor: not-allowed;
+}
+.pointer-none{
+  pointer-events: none;
+}

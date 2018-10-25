@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    html,body{
+      width: 100vw;
+      height: 100vh;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    .main-container{
+      padding: 10px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      font-size: 12px;
+    }
+    #main_grid{
+      flex: 1;
+      background: #Fff;
+      padding: 0 10px;
+      overflow-y: hidden;
+    }
+    #main_grid td{
+      text-align: center;
+    }
+  </style>
+  <link rel="stylesheet" href="c-table.css">
+</head>
+<body>
+  <div class="main-container">
+      <div id="main_grid"></div>
+  </div>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="./c-table.js"></script>
+  <script>
+    $(function(){
+      const that = this;
+      that.grid = new Table({
+        selector: '#main_grid',
+        subKey: 'subs',
+        autoshow: true,
+        col: [{
+            name: '品类名称',
+            fixed: 400
+          },{
+            class: 'pw-8',
+            name: '状态'
+          },{
+            class: 'pw-15',
+            name: '添加人/时间'
+          },{
+            class: 'pw-15',
+            name: '更新人/时间'
+          },{
+            name: '备注信息'
+          },{
+            class: 'pw-15',
+            name: '操作'
+          }
+        ],
+        filterObj: {
+          0: function (data) {
+              const { parentCname, id, parentEname, parentId, remark, status, cname, ename, subs } = data;
+              return `
+                <td>
+                  <p>${cname}</p>
+                  <span class="gray-color">${ename}</span>
+                </td>
+                <td>
+                  ${status?
+                    `<span>启用</span>`
+                    :
+                    `<span class="red-color">停用</span>`
+                  }
+                </td>
+                <td>
+                  <p>${data.createUserName||'-'}</p>
+                  <p>${data.createDate||'-'}</p>
+                </td>
+                <td>
+                  <p>${data.modifyUserName||'-'}</p>
+                  <p>${data.modifyDate||'-'}</p>
+                </td>
+                <td><div class="category-remark">${remark||''}</div></td>
+                <td class="blue-color">
+                    <span data-single='${id}' data-onclick="addNextCategory" class="pointer ${status?'':'operate-disable'}">添加下一级</span>
+                    <span data-single='${id}' data-onclick="editCategory" class="pointer mar-l10 ${status?'':'operate-disable'}">编辑</span>
+                    <span data-id="${parentId?`${parentId}|${id}`:id}" data-onclick="deleteCategory" class="pointer mar-l10">删除</span>
+                </td>
+              `
+          }
+        },
+        defaultFilter: function (data) {
+          const { parentCname, id, parentEname, parentId, remark, status, cname, ename, subs } = data;
+          return `
+            <td>
+              <p>${cname}</p>
+              <span class="gray-color">${ename}</span>
+            </td>
+            <td>
+              ${status?
+                `<span>启用</span>`
+                :
+                `<span class="red-color">停用</span>`
+              }
+            </td>
+            <td>
+              <p>${data.createUserName}</p>
+              <p>${data.createDate}</p>
+            </td>
+            <td>
+              <p>${data.modifyUserName}</p>
+              <p>${data.modifyDate}</p>
+            </td>
+            <td><div class="category-remark">${remark||''}</div></td>
+            <td class="blue-color">
+                <span data-single='${id}' data-onclick="editCategory" class="pointer ${status?'':'operate-disable'}">编辑</span>
+                <span data-id="${parentId?`${parentId}|${id}`:id}" data-onclick="deleteCategory" class="pointer mar-l10">删除</span>
+            </td>
+          `
+        }
+      })
+      that.grid.renderData(
+        [
+          {
+              "id": 155,
+              "cname": "其他",
+              "ename": "Others",
+              "parentId": 0,
+              "parentCname": "",
+              "parentEname": "",
+              "level": 1,
+              "status": 1,
+              "cateIdPath": "155",
+              "cateEnNamePath": "Others",
+              "cateCnNamePath": "其他",
+              "remark": null,
+              "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+              "createUserName": "张三",
+              "createDate": "2018-08-01 09:07:25",
+              "modifyUserId": "28971",
+              "modifyUserName": "张三",
+              "modifyDate": "2018-08-23 15:52:02",
+              "subs": [
+                  {
+                      "id": 195,
+                      "cname": "其他品类",
+                      "ename": "Others Cateogry",
+                      "parentId": 155,
+                      "parentCname": "其他",
+                      "parentEname": "Others",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "155|195",
+                      "cateEnNamePath": "Others -&gt; Others Cateogry",
+                      "cateCnNamePath": "其他 -&gt; 其他品类",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 16:10:43",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-10-18 18:01:48",
+                      "subs": [
+                  {
+                      "id": 195,
+                      "cname": "其他品类",
+                      "ename": "Others Cateogry",
+                      "parentId": 155,
+                      "parentCname": "其他",
+                      "parentEname": "Others",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "155|195",
+                      "cateEnNamePath": "Others -&gt; Others Cateogry",
+                      "cateCnNamePath": "其他 -&gt; 其他品类",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 16:10:43",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-10-18 18:01:48",
+                      "subs": null
+                  },
+                  {
+                      "id": 194,
+                      "cname": "耗材",
+                      "ename": "Supplies",
+                      "parentId": 155,
+                      "parentCname": "其他",
+                      "parentEname": "Others",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "155|194",
+                      "cateEnNamePath": "Others -&gt; Supplies",
+                      "cateCnNamePath": "其他 -&gt; 耗材",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:52:11",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:52:11",
+                      "subs": null
+                  }
+                ]
+                  },
+                  {
+                      "id": 194,
+                      "cname": "耗材",
+                      "ename": "Supplies",
+                      "parentId": 155,
+                      "parentCname": "其他",
+                      "parentEname": "Others",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "155|194",
+                      "cateEnNamePath": "Others -&gt; Supplies",
+                      "cateCnNamePath": "其他 -&gt; 耗材",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:52:11",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:52:11",
+                      "subs": null
+                  }
+              ]
+          },
+          {
+              "id": 153,
+              "cname": "汽摩配",
+              "ename": "Automobiles &amp; Motorcycles",
+              "parentId": 0,
+              "parentCname": "",
+              "parentEname": "",
+              "level": 1,
+              "status": 1,
+              "cateIdPath": "153",
+              "cateEnNamePath": "Automobiles &amp; Motorcycles",
+              "cateCnNamePath": "汽摩配",
+              "remark": "",
+              "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+              "createUserName": "张三",
+              "createDate": "2018-08-01 09:05:22",
+              "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+              "modifyUserName": "张三",
+              "modifyDate": "2018-08-01 09:05:22",
+              "subs": [
+                  {
+                      "id": 177,
+                      "cname": "车灯车饰",
+                      "ename": "Car Light &amp; Accessories",
+                      "parentId": 153,
+                      "parentCname": "汽摩配",
+                      "parentEname": "Automobiles &amp; Motorcycles",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "153|177",
+                      "cateEnNamePath": "Automobiles &amp; Motorcycles -&gt; Car Light &amp; Accessories",
+                      "cateCnNamePath": "汽摩配 -&gt; 车灯车饰",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:31:47",
+                      "modifyUserId": "28971",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:49:52",
+                      "subs": null
+                  },
+                  {
+                      "id": 176,
+                      "cname": "汽摩配工具",
+                      "ename": "Auto &amp; Motorcycles Tools",
+                      "parentId": 153,
+                      "parentCname": "汽摩配",
+                      "parentEname": "Automobiles &amp; Motorcycles",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "153|176",
+                      "cateEnNamePath": "Automobiles &amp; Motorcycles -&gt; Auto &amp; Motorcycles Tools",
+                      "cateCnNamePath": "汽摩配 -&gt; 汽摩配工具",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:31:07",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-01 09:31:07",
+                      "subs": null
+                  },
+                  {
+                      "id": 175,
+                      "cname": "汽车配件",
+                      "ename": "Auto Accessories",
+                      "parentId": 153,
+                      "parentCname": "汽摩配",
+                      "parentEname": "Automobiles &amp; Motorcycles",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "153|175",
+                      "cateEnNamePath": "Automobiles &amp; Motorcycles -&gt; Auto Accessories",
+                      "cateCnNamePath": "汽摩配 -&gt; 汽车配件",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:27:21",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-01 09:27:21",
+                      "subs": null
+                  },
+                  {
+                      "id": 174,
+                      "cname": "摩托车配件",
+                      "ename": "Motorcycle Accessories",
+                      "parentId": 153,
+                      "parentCname": "汽摩配",
+                      "parentEname": "Automobiles &amp; Motorcycles",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "153|174",
+                      "cateEnNamePath": "Automobiles &amp; Motorcycles -&gt; Motorcycle Accessories",
+                      "cateCnNamePath": "汽摩配 -&gt; 摩托车配件",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:26:44",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-01 09:26:44",
+                      "subs": [
+                      {
+              "id": 155,
+              "cname": "其他",
+              "ename": "Others",
+              "parentId": 0,
+              "parentCname": "",
+              "parentEname": "",
+              "level": 1,
+              "status": 1,
+              "cateIdPath": "155",
+              "cateEnNamePath": "Others",
+              "cateCnNamePath": "其他",
+              "remark": null,
+              "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+              "createUserName": "张三",
+              "createDate": "2018-08-01 09:07:25",
+              "modifyUserId": "28971",
+              "modifyUserName": "张三",
+              "modifyDate": "2018-08-23 15:52:02",
+              "subs": [
+                  {
+                      "id": 195,
+                      "cname": "其他品类",
+                      "ename": "Others Cateogry",
+                      "parentId": 155,
+                      "parentCname": "其他",
+                      "parentEname": "Others",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "155|195",
+                      "cateEnNamePath": "Others -&gt; Others Cateogry",
+                      "cateCnNamePath": "其他 -&gt; 其他品类",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 16:10:43",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-10-18 18:01:48",
+                      "subs": [
+                  {
+                      "id": 195,
+                      "cname": "其他品类",
+                      "ename": "Others Cateogry",
+                      "parentId": 155,
+                      "parentCname": "其他",
+                      "parentEname": "Others",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "155|195",
+                      "cateEnNamePath": "Others -&gt; Others Cateogry",
+                      "cateCnNamePath": "其他 -&gt; 其他品类",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 16:10:43",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-10-18 18:01:48",
+                      "subs": null
+                  },
+                  {
+                      "id": 194,
+                      "cname": "耗材",
+                      "ename": "Supplies",
+                      "parentId": 155,
+                      "parentCname": "其他",
+                      "parentEname": "Others",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "155|194",
+                      "cateEnNamePath": "Others -&gt; Supplies",
+                      "cateCnNamePath": "其他 -&gt; 耗材",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:52:11",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:52:11",
+                      "subs": null
+                  }
+                ]
+                  },
+                  {
+                      "id": 194,
+                      "cname": "耗材",
+                      "ename": "Supplies",
+                      "parentId": 155,
+                      "parentCname": "其他",
+                      "parentEname": "Others",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "155|194",
+                      "cateEnNamePath": "Others -&gt; Supplies",
+                      "cateCnNamePath": "其他 -&gt; 耗材",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:52:11",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:52:11",
+                      "subs": null
+                  }
+              ]
+          }
+                      ]
+                  }
+              ]
+          },
+          {
+              "id": 152,
+              "cname": "时尚潮流",
+              "ename": "Fashion",
+              "parentId": 0,
+              "parentCname": "",
+              "parentEname": "",
+              "level": 1,
+              "status": 1,
+              "cateIdPath": "152",
+              "cateEnNamePath": "Fashion",
+              "cateCnNamePath": "时尚潮流",
+              "remark": null,
+              "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+              "createUserName": "张三",
+              "createDate": "2018-08-01 09:04:15",
+              "modifyUserId": "28971",
+              "modifyUserName": "张三",
+              "modifyDate": "2018-08-27 11:20:53",
+              "subs": [
+                  {
+                      "id": 206,
+                      "cname": "手表",
+                      "ename": "Watch",
+                      "parentId": 152,
+                      "parentCname": "时尚潮流",
+                      "parentEname": "Fashion",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "152|206",
+                      "cateEnNamePath": "Fashion -&gt; Watch",
+                      "cateCnNamePath": "时尚潮流 -&gt; 手表",
+                      "remark": "",
+                      "createUserId": "1a4e5eba393802bc0b9ce4e081c9a126",
+                      "createUserName": "张四",
+                      "createDate": "2018-10-08 10:17:34",
+                      "modifyUserId": "1a4e5eba393802bc0b9ce4e081c9a126",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-10-08 10:17:34",
+                      "subs": null
+                  },
+                  {
+                      "id": 205,
+                      "cname": "骑行运动",
+                      "ename": "Cycling Equipments",
+                      "parentId": 152,
+                      "parentCname": "时尚潮流",
+                      "parentEname": "Fashion",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "152|205",
+                      "cateEnNamePath": "Fashion -&gt; Cycling Equipments",
+                      "cateCnNamePath": "时尚潮流 -&gt; 骑行运动",
+                      "remark": "",
+                      "createUserId": "1a4e5eba393802bc0b9ce4e081c9a126",
+                      "createUserName": "张四",
+                      "createDate": "2018-10-08 10:16:58",
+                      "modifyUserId": "1a4e5eba393802bc0b9ce4e081c9a126",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-10-08 10:16:58",
+                      "subs": null
+                  },
+                  {
+                      "id": 192,
+                      "cname": "情趣用品",
+                      "ename": "Sex Products",
+                      "parentId": 152,
+                      "parentCname": "时尚潮流",
+                      "parentEname": "Fashion",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "152|192",
+                      "cateEnNamePath": "Fashion -&gt; Sex Products",
+                      "cateCnNamePath": "时尚潮流 -&gt; 情趣用品",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:46:51",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-09-04 17:52:20",
+                      "subs": null
+                  },
+                  {
+                      "id": 191,
+                      "cname": "运动与户外",
+                      "ename": "Sports &amp; Outdoors",
+                      "parentId": 152,
+                      "parentCname": "时尚潮流",
+                      "parentEname": "Fashion",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "152|191",
+                      "cateEnNamePath": "Fashion -&gt; Sports &amp; Outdoors",
+                      "cateCnNamePath": "时尚潮流 -&gt; 运动与户外",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:46:32",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-09-06 14:20:01",
+                      "subs": null
+                  },
+                  {
+                      "id": 190,
+                      "cname": "鞋帽箱包",
+                      "ename": "Shoes, Hats &amp; Bags",
+                      "parentId": 152,
+                      "parentCname": "时尚潮流",
+                      "parentEname": "Fashion",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "152|190",
+                      "cateEnNamePath": "Fashion -&gt; Shoes, Hats &amp; Bags",
+                      "cateCnNamePath": "时尚潮流 -&gt; 鞋帽箱包",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:45:54",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-09-06 14:19:38",
+                      "subs": null
+                  },
+                  {
+                      "id": 179,
+                      "cname": "饰品配饰",
+                      "ename": "Jewellery Accessories",
+                      "parentId": 152,
+                      "parentCname": "时尚潮流",
+                      "parentEname": "Fashion",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "152|179",
+                      "cateEnNamePath": "Fashion -&gt; Jewellery Accessories",
+                      "cateCnNamePath": "时尚潮流 -&gt; 饰品配饰",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:33:35",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-09-04 17:53:05",
+                      "subs": null
+                  },
+                  {
+                      "id": 178,
+                      "cname": "美妆个护",
+                      "ename": "Beauty Care",
+                      "parentId": 152,
+                      "parentCname": "时尚潮流",
+                      "parentEname": "Fashion",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "152|178",
+                      "cateEnNamePath": "Fashion -&gt; Beauty Care",
+                      "cateCnNamePath": "时尚潮流 -&gt; 美妆个护",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:32:15",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-09-04 17:53:17",
+                      "subs": null
+                  }
+              ]
+          },
+          {
+              "id": 151,
+              "cname": "家居休闲",
+              "ename": "Household &amp; Lifestyle",
+              "parentId": 0,
+              "parentCname": "",
+              "parentEname": "",
+              "level": 1,
+              "status": 1,
+              "cateIdPath": "151",
+              "cateEnNamePath": "Household &amp; Lifestyle",
+              "cateCnNamePath": "家居休闲",
+              "remark": null,
+              "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+              "createUserName": "张三",
+              "createDate": "2018-08-01 09:03:52",
+              "modifyUserId": "28971",
+              "modifyUserName": "张三",
+              "modifyDate": "2018-08-23 15:38:25",
+              "subs": [
+                  {
+                      "id": 204,
+                      "cname": "乐器",
+                      "ename": "Musical Instruments",
+                      "parentId": 151,
+                      "parentCname": "家居休闲",
+                      "parentEname": "Household &amp; Lifestyle",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "151|204",
+                      "cateEnNamePath": "Household &amp; Lifestyle -&gt; Musical Instruments",
+                      "cateCnNamePath": "家居休闲 -&gt; 乐器",
+                      "remark": "",
+                      "createUserId": "1a4e5eba393802bc0b9ce4e081c9a126",
+                      "createUserName": "张四",
+                      "createDate": "2018-10-08 10:14:34",
+                      "modifyUserId": "1a4e5eba393802bc0b9ce4e081c9a126",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-10-08 10:14:34",
+                      "subs": null
+                  },
+                  {
+                      "id": 198,
+                      "cname": "厨房用品",
+                      "ename": "Kitchen Supplies",
+                      "parentId": 151,
+                      "parentCname": "家居休闲",
+                      "parentEname": "Household &amp; Lifestyle",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "151|198",
+                      "cateEnNamePath": "Household &amp; Lifestyle -&gt; Kitchen Supplies",
+                      "cateCnNamePath": "家居休闲 -&gt; 厨房用品",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-24 17:25:50",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-24 17:25:50",
+                      "subs": null
+                  },
+                  {
+                      "id": 197,
+                      "cname": "日用品",
+                      "ename": "Daily Commodity",
+                      "parentId": 151,
+                      "parentCname": "家居休闲",
+                      "parentEname": "Household &amp; Lifestyle",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "151|197",
+                      "cateEnNamePath": "Household &amp; Lifestyle -&gt; Daily Commodity",
+                      "cateCnNamePath": "家居休闲 -&gt; 日用品",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-24 16:54:11",
+                      "modifyUserId": "28971",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-24 17:25:23",
+                      "subs": null
+                  },
+                  {
+                      "id": 189,
+                      "cname": "母婴家政",
+                      "ename": "Mother &amp; Kids ",
+                      "parentId": 151,
+                      "parentCname": "家居休闲",
+                      "parentEname": "Household &amp; Lifestyle",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "151|189",
+                      "cateEnNamePath": "Household &amp; Lifestyle -&gt; Mother &amp; Kids ",
+                      "cateCnNamePath": "家居休闲 -&gt; 母婴家政",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:44:40",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:44:40",
+                      "subs": null
+                  },
+                  {
+                      "id": 188,
+                      "cname": "宠物用品",
+                      "ename": "Pet Supplies",
+                      "parentId": 151,
+                      "parentCname": "家居休闲",
+                      "parentEname": "Household &amp; Lifestyle",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "151|188",
+                      "cateEnNamePath": "Household &amp; Lifestyle -&gt; Pet Supplies",
+                      "cateCnNamePath": "家居休闲 -&gt; 宠物用品",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:41:43",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:41:43",
+                      "subs": null
+                  },
+                  {
+                      "id": 173,
+                      "cname": "玩具娱乐",
+                      "ename": "Toys &amp; Entertainment",
+                      "parentId": 151,
+                      "parentCname": "家居休闲",
+                      "parentEname": "Household &amp; Lifestyle",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "151|173",
+                      "cateEnNamePath": "Household &amp; Lifestyle -&gt; Toys &amp; Entertainment",
+                      "cateCnNamePath": "家居休闲 -&gt; 玩具娱乐",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:25:12",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-09-06 14:18:49",
+                      "subs": null
+                  },
+                  {
+                      "id": 171,
+                      "cname": "五金工具",
+                      "ename": "Hardware",
+                      "parentId": 151,
+                      "parentCname": "家居休闲",
+                      "parentEname": "Household &amp; Lifestyle",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "151|171",
+                      "cateEnNamePath": "Household &amp; Lifestyle -&gt; Hardware",
+                      "cateCnNamePath": "家居休闲 -&gt; 五金工具",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:21:57",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-09-04 18:00:12",
+                      "subs": null
+                  },
+                  {
+                      "id": 170,
+                      "cname": "家装厨卫",
+                      "ename": "Home Improvement",
+                      "parentId": 151,
+                      "parentCname": "家居休闲",
+                      "parentEname": "Household &amp; Lifestyle",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "151|170",
+                      "cateEnNamePath": "Household &amp; Lifestyle -&gt; Home Improvement",
+                      "cateCnNamePath": "家居休闲 -&gt; 家装厨卫",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:21:34",
+                      "modifyUserId": "28971",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:39:56",
+                      "subs": null
+                  },
+                  {
+                      "id": 169,
+                      "cname": "园艺用品",
+                      "ename": "Garden Supplies",
+                      "parentId": 151,
+                      "parentCname": "家居休闲",
+                      "parentEname": "Household &amp; Lifestyle",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "151|169",
+                      "cateEnNamePath": "Household &amp; Lifestyle -&gt; Garden Supplies",
+                      "cateCnNamePath": "家居休闲 -&gt; 园艺用品",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:21:08",
+                      "modifyUserId": "28971",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-24 16:55:12",
+                      "subs": null
+                  },
+                  {
+                      "id": 168,
+                      "cname": "办公用品",
+                      "ename": "Office Supplies",
+                      "parentId": 151,
+                      "parentCname": "家居休闲",
+                      "parentEname": "Household &amp; Lifestyle",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "151|168",
+                      "cateEnNamePath": "Household &amp; Lifestyle -&gt; Office Supplies",
+                      "cateCnNamePath": "家居休闲 -&gt; 办公用品",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:20:49",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-09-04 18:00:23",
+                      "subs": null
+                  }
+              ]
+          },
+          {
+              "id": 150,
+              "cname": "服装",
+              "ename": "Clothing",
+              "parentId": 0,
+              "parentCname": "",
+              "parentEname": "",
+              "level": 1,
+              "status": 1,
+              "cateIdPath": "150",
+              "cateEnNamePath": "Clothing",
+              "cateCnNamePath": "服装",
+              "remark": "",
+              "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+              "createUserName": "张三",
+              "createDate": "2018-08-01 09:03:05",
+              "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+              "modifyUserName": "张三",
+              "modifyDate": "2018-08-01 09:03:05",
+              "subs": [
+                  {
+                      "id": 185,
+                      "cname": "时尚女装",
+                      "ename": "Women Clohting",
+                      "parentId": 150,
+                      "parentCname": "服装",
+                      "parentEname": "Clothing",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "150|185",
+                      "cateEnNamePath": "Clothing -&gt; Women Clohting",
+                      "cateCnNamePath": "服装 -&gt; 时尚女装",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:24:13",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:24:13",
+                      "subs": null
+                  },
+                  {
+                      "id": 184,
+                      "cname": "男士服饰",
+                      "ename": "Men Clothing",
+                      "parentId": 150,
+                      "parentCname": "服装",
+                      "parentEname": "Clothing",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "150|184",
+                      "cateEnNamePath": "Clothing -&gt; Men Clothing",
+                      "cateCnNamePath": "服装 -&gt; 男士服饰",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:23:19",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:23:19",
+                      "subs": null
+                  },
+                  {
+                      "id": 183,
+                      "cname": "婴孕童服饰",
+                      "ename": "Maternity-Baby-Children Clothing",
+                      "parentId": 150,
+                      "parentCname": "服装",
+                      "parentEname": "Clothing",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "150|183",
+                      "cateEnNamePath": "Clothing -&gt; Maternity-Baby-Children Clothing",
+                      "cateCnNamePath": "服装 -&gt; 婴孕童服饰",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:22:51",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:22:51",
+                      "subs": null
+                  },
+                  {
+                      "id": 182,
+                      "cname": "泳衣内衣",
+                      "ename": "Intimates",
+                      "parentId": 150,
+                      "parentCname": "服装",
+                      "parentEname": "Clothing",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "150|182",
+                      "cateEnNamePath": "Clothing -&gt; Intimates",
+                      "cateCnNamePath": "服装 -&gt; 泳衣内衣",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:20:00",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:20:00",
+                      "subs": null
+                  },
+                  {
+                      "id": 166,
+                      "cname": "大码女装",
+                      "ename": "Plus Size Women Clothing",
+                      "parentId": 150,
+                      "parentCname": "服装",
+                      "parentEname": "Clothing",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "150|166",
+                      "cateEnNamePath": "Clothing -&gt; Plus Size Women Clothing",
+                      "cateCnNamePath": "服装 -&gt; 大码女装",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:18:03",
+                      "modifyUserId": "28971",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:21:15",
+                      "subs": null
+                  },
+                  {
+                      "id": 163,
+                      "cname": "运动户外鞋服",
+                      "ename": "Sports &amp; Outdoors Wear",
+                      "parentId": 150,
+                      "parentCname": "服装",
+                      "parentEname": "Clothing",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "150|163",
+                      "cateEnNamePath": "Clothing -&gt; Sports &amp; Outdoors Wear",
+                      "cateCnNamePath": "服装 -&gt; 运动户外鞋服",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:15:10",
+                      "modifyUserId": "28971",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:20:51",
+                      "subs": null
+                  }
+              ]
+          },
+          {
+              "id": 149,
+              "cname": "电子",
+              "ename": "Electronic",
+              "parentId": 0,
+              "parentCname": "",
+              "parentEname": "",
+              "level": 1,
+              "status": 1,
+              "cateIdPath": "149",
+              "cateEnNamePath": "Electronic",
+              "cateCnNamePath": "电子",
+              "remark": "",
+              "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+              "createUserName": "张三",
+              "createDate": "2018-08-01 09:02:43",
+              "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+              "modifyUserName": "张三",
+              "modifyDate": "2018-08-01 09:02:43",
+              "subs": [
+                  {
+                      "id": 203,
+                      "cname": "安全防护",
+                      "ename": "Security",
+                      "parentId": 149,
+                      "parentCname": "电子",
+                      "parentEname": "Electronic",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "149|203",
+                      "cateEnNamePath": "Electronic -&gt; Security",
+                      "cateCnNamePath": "电子 -&gt; 安全防护",
+                      "remark": "",
+                      "createUserId": "1a4e5eba393802bc0b9ce4e081c9a126",
+                      "createUserName": "张四",
+                      "createDate": "2018-10-08 10:13:45",
+                      "modifyUserId": "1a4e5eba393802bc0b9ce4e081c9a126",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-10-08 10:13:45",
+                      "subs": null
+                  },
+                  {
+                      "id": 196,
+                      "cname": "工业工具",
+                      "ename": "Industrial Tools",
+                      "parentId": 149,
+                      "parentCname": "电子",
+                      "parentEname": "Electronic",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "149|196",
+                      "cateEnNamePath": "Electronic -&gt; Industrial Tools",
+                      "cateCnNamePath": "电子 -&gt; 工业工具",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 22:24:33",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 22:24:33",
+                      "subs": null
+                  },
+                  {
+                      "id": 187,
+                      "cname": "电话与通讯",
+                      "ename": "Phones &amp; Telecommunications",
+                      "parentId": 149,
+                      "parentCname": "电子",
+                      "parentEname": "Electronic",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "149|187",
+                      "cateEnNamePath": "Electronic -&gt; Phones &amp; Telecommunications",
+                      "cateCnNamePath": "电子 -&gt; 电话与通讯",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:28:06",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:28:06",
+                      "subs": null
+                  },
+                  {
+                      "id": 186,
+                      "cname": "电脑与办公",
+                      "ename": "Computer &amp; Office",
+                      "parentId": 149,
+                      "parentCname": "电子",
+                      "parentEname": "Electronic",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "149|186",
+                      "cateEnNamePath": "Electronic -&gt; Computer &amp; Office",
+                      "cateCnNamePath": "电子 -&gt; 电脑与办公",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-23 15:27:37",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:27:37",
+                      "subs": null
+                  },
+                  {
+                      "id": 160,
+                      "cname": "家用电器",
+                      "ename": "Domestic Appliance",
+                      "parentId": 149,
+                      "parentCname": "电子",
+                      "parentEname": "Electronic",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "149|160",
+                      "cateEnNamePath": "Electronic -&gt; Domestic Appliance",
+                      "cateCnNamePath": "电子 -&gt; 家用电器",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:11:00",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-01 09:11:00",
+                      "subs": null
+                  },
+                  {
+                      "id": 159,
+                      "cname": "航模",
+                      "ename": "Aeromodelling",
+                      "parentId": 149,
+                      "parentCname": "电子",
+                      "parentEname": "Electronic",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "149|159",
+                      "cateEnNamePath": "Electronic -&gt; Aeromodelling",
+                      "cateCnNamePath": "电子 -&gt; 航模",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:10:16",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-01 09:10:16",
+                      "subs": null
+                  },
+                  {
+                      "id": 158,
+                      "cname": "消费电子",
+                      "ename": "Consumer Electronic",
+                      "parentId": 149,
+                      "parentCname": "电子",
+                      "parentEname": "Electronic",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "149|158",
+                      "cateEnNamePath": "Electronic -&gt; Consumer Electronic",
+                      "cateCnNamePath": "电子 -&gt; 消费电子",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:09:28",
+                      "modifyUserId": "28971",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-23 15:25:56",
+                      "subs": null
+                  },
+                  {
+                      "id": 157,
+                      "cname": "照明灯饰",
+                      "ename": "Lighting",
+                      "parentId": 149,
+                      "parentCname": "电子",
+                      "parentEname": "Electronic",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "149|157",
+                      "cateEnNamePath": "Electronic -&gt; Lighting",
+                      "cateCnNamePath": "电子 -&gt; 照明灯饰",
+                      "remark": null,
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:09:15",
+                      "modifyUserId": "31373",
+                      "modifyUserName": "张四",
+                      "modifyDate": "2018-10-18 17:42:48",
+                      "subs": null
+                  },
+                  {
+                      "id": 156,
+                      "cname": "电子元器件",
+                      "ename": "Electronic components",
+                      "parentId": 149,
+                      "parentCname": "电子",
+                      "parentEname": "Electronic",
+                      "level": 2,
+                      "status": 1,
+                      "cateIdPath": "149|156",
+                      "cateEnNamePath": "Electronic -&gt; Electronic components",
+                      "cateCnNamePath": "电子 -&gt; 电子元器件",
+                      "remark": "",
+                      "createUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "createUserName": "张三",
+                      "createDate": "2018-08-01 09:08:52",
+                      "modifyUserId": "1a4d866a1bb57cc75a6b1ddfc988bef4",
+                      "modifyUserName": "张三",
+                      "modifyDate": "2018-08-01 09:08:52",
+                      "subs": null
+                  }
+              ]
+          }
+        ]
+      )
+    })
+  </script>
+</body>
+</html>
