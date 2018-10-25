@@ -56,6 +56,9 @@ Table.prototype = {
 	init: function() {
 		const that = this;
 		const { options, tpl } = that;
+		if(!options.selector) {
+			throw new Error('selector option can not be empty')
+		}
 		const $table = $(options.selector);
 		$table.append(tpl);
 		that.subKey = options.subKey
