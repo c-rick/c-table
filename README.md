@@ -20,5 +20,5 @@ grid.renderData(localDate)
 
 ### example like demo
 
-[img1](https://c-rick.github.io/images/c-table.png)
+![alt](https://c-rick.github.io/images/c-table.png)
 
